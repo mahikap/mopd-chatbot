@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: finder-dev.nyc.gov
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+        path: /mopd(/|$)(.*)
+        pathType: Prefix
+  tls:
+  - hosts:
+    - finder-dev.nyc.gov
+    secretName: finder-dev.nyc.gov-secret
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.143.140.8
